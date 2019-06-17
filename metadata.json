@@ -1,0 +1,25 @@
+{
+  "name": "centizen-accredit",
+  "version": "0.1.0",
+  "author": "James Michael",
+  "summary": "Automated Configuration as Code using Puppet for accredit",
+  "license": "proprietary",
+  "source": "https://gitlab.centizenapps.com/devops/puppet-accredit.git",
+  "dependencies": [
+
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "16.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 6.0.0"
+    }
+  ]
+}
