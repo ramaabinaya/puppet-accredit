@@ -18,6 +18,7 @@ function centizen_module_install() {
         echo "Module $2 already present."
     else
         git clone https://${GIT_USERNAME}:${GIT_ACCESSKEY}@${GIT_HOST}/devops/$1.git ${PUPPETFORGE_MODULES_PATH}/$2
+        git clone https://${GIT_USERNAME}:${GIT_ACCESSKEY}@${GIT_HOST}/commandcredit/$1.git ${PUPPETFORGE_MODULES_PATH}/$2
     fi
 }
 
