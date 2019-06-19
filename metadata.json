@@ -4,7 +4,7 @@
   "author": "James Michael",
   "summary": "Automated Configuration as Code using Puppet for accredit",
   "license": "proprietary",
-  "source": "https://gitlab.centizenapps.com/devops/puppet-accredit.git",
+  "source": "https://gitlab.centizenapps.com/commandcredit/puppet-accredit.git",
   "dependencies": [
 
   ],
