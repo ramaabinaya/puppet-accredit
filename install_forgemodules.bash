@@ -2,10 +2,11 @@
 
 PUPPET="/opt/puppetlabs/bin/puppet"
 PUPPETFORGE_MODULES_PATH="/opt/puppetforge/modules"
-GIT_HOST="gitlab.centizenapps.com"
-GIT_USERNAME="zen"
+GIT_HOST="bitbucket.org"
+GIT_USERNAME="jamesbmichael
+"
 #TODO: This has to be fetched from Environment or from AWS Secrets Manager
-GIT_ACCESSKEY='S1vXPYJdB5WMADHy5PT6'
+GIT_ACCESSKEY='92W32wpgManx9KaeFtNy'
 
 function puppet_module_install() {
     #TODO: This install fails if not run with sudo. Or the modules path should be owned by the user who is running this command.
