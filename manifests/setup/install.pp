@@ -41,7 +41,7 @@ class accredit::setup::install {
   exec { 'extract_currentbuild' :
     command     => "tar -xvf /opt/accredit/$accredit::version-express.tar -C /opt/accredit/node/$accredit::version",
     path        => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
-    require     => Exec['download_notus_package'],
+    require     => Exec['download_accredit_package'],
     refreshonly => true,
   }
 
@@ -56,7 +56,8 @@ class accredit::setup::install {
   exec { 'extract_build' :
     command     => "tar -xvf /var/www/$accredit::version-dist.tar --strip-components 1 -C /var/www/html/$accredit::version",
     path        => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
-    require     => Exec['download_notusdist_package'],
+    require     => Exec['download_accreditdist_package'],
+    notify      => Exec['pm2_start'],
     refreshonly => true,
   }
 
@@ -64,5 +65,13 @@ class accredit::setup::install {
       path    => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
       require => Exec['extract_build'],
     }
+  exec { 'pm2_start':
+    environment => ["HOME=/home/ubuntu"],
+    path        => '/usr/local/bin/:/bin/:/sbin/:/usr/bin/:/usr/sbin/',
+    cwd         => "/opt/accredit/node/$accredit::version/express",
+    user        => 'ubuntu',
+    command     => 'pm2 start ./bin/www',
+    refreshonly => true,
+  }  
 
 }
