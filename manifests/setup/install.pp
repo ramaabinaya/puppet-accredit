@@ -6,7 +6,7 @@
 #   include accredit::setup::install
 class accredit::setup::install {
 
-  file { ['/opt/accredit', '/opt/accredit/node',"/opt/accredit/node/$accredit::version"] :
+  file { ['/opt/accredit', '/opt/accredit/node',"/opt/accredit/node/$accredit::version","/opt/accredit/node/$accredit::version1"] :
     ensure => 'directory'
   }
 
@@ -31,7 +31,7 @@ class accredit::setup::install {
     }
 
   exec { 'download_accredit_package' :
-    command => "/usr/local/bin/aws s3 cp s3://centizen-jenkins/builds/accredit/$accredit::version/express.tar $accredit::version-express.tar",
+    command => "/usr/local/bin/aws s3 cp s3://accredit-jenkins/builds/accredit/$accredit::version/express.tar $accredit::version-express.tar",
     cwd     => '/opt/accredit',
     path    => '/usr/local/bin/:/bin/:/sbin/:/usr/bin/:/usr/sbin/',
     notify  => Exec['extract_currentbuild'],
@@ -44,9 +44,8 @@ class accredit::setup::install {
     require     => Exec['download_accredit_package'],
     refreshonly => true,
   }
-
-  exec { 'download_accreditdist_package' :
-    command => "/usr/local/bin/aws s3 cp s3://centizen-jenkins/builds/accredit/$accredit::version/dist.tar $accredit::version-dist.tar",
+ exec { 'download_accreditdist_package' :
+    command => "/usr/local/bin/aws s3 cp s3://accredit-jenkins/builds/accredit/$accredit::version/dist.tar $accredit::version-dist.tar",
     cwd     => '/var/www',
     path    => '/usr/local/bin/:/bin/:/sbin/:/usr/bin/:/usr/sbin/',
     notify  => Exec['extract_build'],
@@ -65,6 +64,21 @@ class accredit::setup::install {
       path    => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
       require => Exec['extract_build'],
     }
+ exec { 'download_accreditexpress_package' :
+    command => "/usr/local/bin/aws s3 cp s3://accredit-jenkins/builds/accredit-api/$accredit::version1/express.tar $accredit::version1-express.tar",
+    cwd     => '/opt/accredit',
+    path    => '/usr/local/bin/:/bin/:/sbin/:/usr/bin/:/usr/sbin/',
+    notify  => Exec['extract_currentapibuild'],
+    unless  => "test -f /opt/accredit/$accredit::version1-dist.tar",
+  }
+exec { 'extract_currentapibuild' :
+    command     => "tar -xvf /opt/accredit/$accredit::version1-express.tar -C /opt/accredit/node/$accredit::version1",
+    path        => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
+    require     => Exec['download_accreditexpress_package'],
+    notify      => Exec['pm2_start1'],
+    refreshonly => true,
+  }
+
   exec { 'pm2_start':
     environment => ["HOME=/home/ubuntu"],
     path        => '/usr/local/bin/:/bin/:/sbin/:/usr/bin/:/usr/sbin/',
@@ -72,6 +86,14 @@ class accredit::setup::install {
     user        => 'ubuntu',
     command     => 'pm2 start ./bin/www',
     refreshonly => true,
-  }  
+  }
+exec { 'pm2_start1':
+    environment => ["HOME=/home/ubuntu"],
+    path        => '/usr/local/bin/:/bin/:/sbin/:/usr/bin/:/usr/sbin/',
+    cwd         => "/opt/accredit/node/$accredit::version1/express",
+    user        => 'ubuntu',
+    command     => 'pm2 start ./bin/www',
+    refreshonly => true,
+  }
 
 }
