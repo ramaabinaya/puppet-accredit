@@ -3,8 +3,7 @@
 PUPPET="/opt/puppetlabs/bin/puppet"
 PUPPETFORGE_MODULES_PATH="/opt/puppetforge/modules"
 GIT_HOST="bitbucket.org"
-GIT_USERNAME="jamesbmichael
-"
+GIT_USERNAME="jamesbmichael"
 #TODO: This has to be fetched from Environment or from AWS Secrets Manager
 GIT_ACCESSKEY='92W32wpgManx9KaeFtNy'
 
