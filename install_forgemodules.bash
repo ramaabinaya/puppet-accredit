@@ -3,10 +3,10 @@
 PUPPET="/opt/puppetlabs/bin/puppet"
 PUPPETFORGE_MODULES_PATH="/opt/puppetforge/modules"
 GIT_HOST="bitbucket.org"
-GIT_USERNAME="jamesbmichael
-"
+GIT_USERNAME="jamesbmichael"
+OWNER_NAME="rford01757"
 #TODO: This has to be fetched from Environment or from AWS Secrets Manager
-GIT_ACCESSKEY='92W32wpgManx9KaeFtNy'
+GIT_ACCESSKEY='Xe98sTt5FgEr2sxa'
 
 function puppet_module_install() {
     #TODO: This install fails if not run with sudo. Or the modules path should be owned by the user who is running this command.
@@ -18,8 +18,10 @@ function centizen_module_install() {
     if [ -d "${PUPPETFORGE_MODULES_PATH}/$2" ]; then
         echo "Module $2 already present."
     else
-        git clone https://${GIT_USERNAME}:${GIT_ACCESSKEY}@${GIT_HOST}/devops/$1.git ${PUPPETFORGE_MODULES_PATH}/$2
-        git clone https://${GIT_USERNAME}:${GIT_ACCESSKEY}@${GIT_HOST}/commandcredit/$1.git ${PUPPETFORGE_MODULES_PATH}/$2
+        git clone  https://${!GIT_USERNAME}:${!GIT_ACCESSKEY}@${!GIT_HOST}/${!OWNER_NAME}/$1.git ${!PUPPETFORGE_MODULES_PATH}/$2
+        
+
+       
     fi
 }
 
