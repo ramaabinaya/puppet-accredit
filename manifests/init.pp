@@ -6,7 +6,7 @@
 #
 # @example
 #   include accredit
-class accredit($version) {
+class accredit($accreditapp,$accreditapi) {
 
   class { 'utilities::autouser' :
     username => 'zenuser'

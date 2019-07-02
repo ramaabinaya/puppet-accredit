@@ -16,7 +16,7 @@ class { 'apache':
   include apache::mod::rewrite
   apache::vhost { 'dev.accredit.centizenapps.com':
     port          => '80',
-    docroot       => "/var/www/html/$accredit::version",
+    docroot       => "/var/www/html/$accredit::accreditapp",
     docroot_owner => 'www-data',
     docroot_group => 'www-data',
     rewrites      => [{ rewrite_rule => ['^/api/(.*)  http://localhost:3000/$1 [L,P]'] },
