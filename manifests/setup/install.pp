@@ -31,25 +31,25 @@ class accredit::setup::install {
     }
 
   exec { 'download_accredit_package' :
-    command => "/usr/local/bin/aws s3 cp s3://accredit-jenkins/builds/accredit/$accredit::accreditapp/express.tar $accredit::accreditapp-express.tar",
+    command => "/usr/local/bin/aws s3 cp s3://accredit-jenkins/builds/accredit/$accredit::accreditapp/express.tar ${accredit::accreditapp}_express.tar",
     cwd     => '/opt/accredit',
     path    => '/usr/local/bin/:/bin/:/sbin/:/usr/bin/:/usr/sbin/',
     notify  => Exec['extract_currentbuild'],
-    unless  => "test -f /opt/accredit/$accredit::accreditapp-express.tar",
+    unless  => "test -f /opt/accredit/${accredit::accreditapp}_express.tar",
   }
 
   exec { 'extract_currentbuild' :
-    command     => "tar -xvf /opt/accredit/$accredit::accreditapp-express.tar -C /opt/accredit/node/$accredit::accreditapp",
+    command     => "tar -xvf /opt/accredit/${accredit::accreditapp}_express.tar -C /opt/accredit/node/$accredit::accreditapp",
     path        => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
     require     => Exec['download_accredit_package'],
     refreshonly => true,
   }
  exec { 'download_accreditdist_package' :
-    command => "/usr/local/bin/aws s3 cp s3://accredit-jenkins/builds/accredit/$accredit::accreditapp/dist.tar $accredit::accreditapp-dist.tar",
+    command => "/usr/local/bin/aws s3 cp s3://accredit-jenkins/builds/accredit/$accredit::accreditapp/dist.tar ${accredit::accreditapp}_dist.tar",
     cwd     => '/var/www',
     path    => '/usr/local/bin/:/bin/:/sbin/:/usr/bin/:/usr/sbin/',
     notify  => Exec['extract_build'],
-    unless  => "test -f /var/www/$accredit::accreditapp-dist.tar",
+    unless  => "test -f /var/www/${accredit::accreditapp}_dist.tar",
   }
 
   exec { 'extract_build' :
@@ -65,14 +65,14 @@ class accredit::setup::install {
       require => Exec['extract_build'],
     }
  exec { 'download_accreditexpress_package' :
-    command => "/usr/local/bin/aws s3 cp s3://accredit-jenkins/builds/accredit-api/$accredit::accreditapi/express.tar $accredit::accreditapi-express.tar",
+    command => "/usr/local/bin/aws s3 cp s3://accredit-jenkins/builds/accredit-api/$accredit::accreditapi/express.tar ${accredit::accreditapi}_express.tar",
     cwd     => '/opt/accredit',
     path    => '/usr/local/bin/:/bin/:/sbin/:/usr/bin/:/usr/sbin/',
     notify  => Exec['extract_currentapibuild'],
-    unless  => "test -f /opt/accredit/$accredit::accreditapi-dist.tar",
+    unless  => "test -f /opt/accredit/${accredit::accreditapi}_dist.tar",
   }
 exec { 'extract_currentapibuild' :
-    command     => "tar -xvf /opt/accredit/$accredit::accreditapi-express.tar -C /opt/accredit/node/$accredit::accreditapi",
+    command     => "tar -xvf /opt/accredit/${accredit::accreditapi}_express.tar -C /opt/accredit/node/$accredit::accreditapi",
     path        => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
     require     => Exec['download_accreditexpress_package'],
     notify      => Exec['pm2_start1'],
