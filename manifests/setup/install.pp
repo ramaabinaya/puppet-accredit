@@ -53,7 +53,7 @@ class accredit::setup::install {
   }
 
   exec { 'extract_build' :
-    command     => "tar -xvf /var/www/$accredit::accreditapp-dist.tar --strip-components 1 -C /var/www/html/$accredit::accreditapp",
+    command     => "tar -xvf /var/www/${accredit::accreditapp}_dist.tar --strip-components 1 -C /var/www/html/$accredit::accreditapp",
     path        => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
     require     => Exec['download_accreditdist_package'],
     notify      => Exec['pm2_start'],
